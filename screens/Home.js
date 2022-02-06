@@ -747,9 +747,57 @@ const Home = () => {
     }
 
     const renderExpenseSummary = () => {
+        let data = processCategoryDataToDisplay();
+
+        const renderItem = ({item}) => (
+            <TouchableOpacity
+                style={{
+                    flexDirection: 'row',
+                    height: 40,
+                    paddingHorizontal: SIZES.radius,
+                    borderRadius: 10,
+                    backgroundColor: (selectedCategory && selectedCategory.name == item.name) ? item.color : COLORS.white
+                }}
+                onPress={()=>{
+                    setSelectCategoryByName(item.name);
+                }}
+            >
+                <View
+                    style={{
+                        flex: 1, 
+                        flexDirection: 'row', 
+                        alignItems: 'center'
+                    }}
+                >
+                    <View
+                        style={{
+                            width: 20,
+                            height: 20,
+                            backgroundColor: (selectedCategory && selectedCategory.name == item.name) ? COLORS.white : item.color,
+                            borderRadius: 5
+                        }}
+                    />
+
+                    <Text style={{ marginLeft: SIZES.base, color: (selectedCategory && selectedCategory.name == item.name) ? COLORS.white : COLORS.primary, ...FONTS.h3 }}>{item.name}</Text>
+                </View>
+                    
+                <View
+                    style={{
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Text style={{ color: (selectedCategory && selectedCategory.name == item.name) ? COLORS.white : COLORS.primary, ...FONTS.h3 }}>{item.y} USD - {item.label}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+
         return (
-            <View>
-                <Text>Expense Summary</Text>
+            <View style={{padding: SIZES.padding}}>
+                <FlatList 
+                    data={data}
+                    renderItem={renderItem}
+                    keyExtractor={(item)=> `${item.id}`}
+                />
             </View>
         );
     }
